@@ -8,9 +8,8 @@ from docx import Document
 from pptx import Presentation
 import io
 
-# =========================================================
+
 # === Persistent Chat Memory Utilities ====================
-# =========================================================
 
 HISTORY_FILE = "chat_history.json"
 
@@ -148,7 +147,7 @@ def display_pdf(pdf_bytes):
 # =========================================================
 
 st.set_page_config(layout="wide")
-st.title("🧠 Persistent Multi-Format Document Generator")
+st.title("Doc Builder")
 
 with st.sidebar:
     st.header("⚙️ Configuration")
@@ -157,7 +156,7 @@ with st.sidebar:
 
     doc_type = st.selectbox("Choose Output Format", ["pdf", "docx", "pptx", "txt"], index=0)
 
-    if st.button("🗑️ Clear Everything", use_container_width=True):
+    if st.button("Clear Everything", use_container_width=True):
         for f in [HISTORY_FILE]:
             if os.path.exists(f):
                 os.remove(f)
@@ -167,7 +166,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("""
-    **💡 Tips:**
+    *# Tips:**
     - Describe your document (e.g. "Write a business report on AI ethics")
     - Chat and refine it naturally
     - Choose output format
@@ -177,7 +176,7 @@ with st.sidebar:
 col1, col2 = st.columns([1, 1.2], gap="large")
 
 with col1:
-    st.subheader("💬 Conversation")
+    st.subheader("Conversation")
     chat_container = st.container(height=500, border=True)
     with chat_container:
         for message in st.session_state.messages:
@@ -185,7 +184,7 @@ with col1:
                 st.write(message["content"])
 
 with col2:
-    st.subheader("📄 Document Preview / Download")
+    st.subheader("Document Preview / Download")
     preview_container = st.container(border=True, height=700)
     with preview_container:
         if st.session_state.current_file:
@@ -200,14 +199,14 @@ with col2:
             else:
                 st.download_button("⬇️ Download TXT", st.session_state.current_file, "document.txt", "text/plain")
         else:
-            st.info("👋 Start chatting to generate your document!")
+            st.info("Start chatting to generate your document!")
 
 st.divider()
 st.subheader("Your Message")
 
 if prompt := st.chat_input("Ask about the document, request changes..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.spinner("🤖 Thinking..."):
+    with st.spinner("Thinking..."):
         try:
             content = generate_document_with_groq(
                 api_key, st.session_state.messages[-10:], doc_type, st.session_state.current_content
@@ -221,7 +220,7 @@ if prompt := st.chat_input("Ask about the document, request changes..."):
                 st.session_state.current_file = generate_pptx(content)
             else:
                 st.session_state.current_file = content.encode("utf-8")
-            response = f"[✅] {doc_type.upper()} updated and saved!"
+            response = {doc_type.upper()} updated and saved!"
         except Exception as e:
             response = f"[ERROR] {str(e)}"
     st.session_state.messages.append({"role": "assistant", "content": response})
