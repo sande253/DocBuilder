@@ -16,7 +16,7 @@ class MongoDBHandler:
             "document_name":document_name,
             "session_id":session_id,
             "user_name":user_name,
-            "pages":[],
+            "pages":pages,
             "history":[]
         }
         try:
@@ -43,7 +43,7 @@ class MongoDBHandler:
         return documents 
     
     def readBySession(self, session_id ):
-        documents = list(self.collection({"session_id":session_id}))
+        documents = list(self.collection.find({"session_id":session_id}))
 
         if documents: 
             for doc in documents :

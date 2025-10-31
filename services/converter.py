@@ -81,7 +81,7 @@ class Handler:
                 "summary": "",
                 "timestamp": datetime.now().isoformat()
             }
-            mongo.insert_page_at(session_id, position, page_doc)
+            mongo.add_page(session_id=session_id, position=position, new_page=page_doc)
         return pages
 
     def update_page(self, session_id: str, page_no: int, new_text: str):
@@ -100,9 +100,10 @@ class Handler:
     # ---------- RETRIEVE ----------
     def get_all_pages(self, session_id: str):
         """Retrieve all pages of a particular session."""
-        doc = mongo.readBySession(session_id)
-        if not doc:
+        doc_list = mongo.readBySession(session_id)
+        if not doc_list:
             return []
+        doc = doc_list[0]  # first document
         return doc.get("pages", [])
 
     # ---------- COMPILE ----------
