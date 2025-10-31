@@ -125,33 +125,33 @@ root_agent = Agent(
     before_agent_callback=before_agent_callback
 )
 
-APP_NAME = "agents"  # must match the directory name that contains your agent.py
-USER_ID = "1234"
-SESSION_ID = "session1234d"
+# APP_NAME = "agents"  # must match the directory name that contains your agent.py
+# USER_ID = "1234"
+# SESSION_ID = "session1234d"
 
-session_service = InMemorySessionService()
+# session_service = InMemorySessionService()
 
-# Use asyncio.run() to execute the async session creation**
-session_service = InMemorySessionService()
+# # Use asyncio.run() to execute the async session creation**
+# session_service = InMemorySessionService()
 
-# Use asyncio.run() to execute the async session creation**
-session = asyncio.run(session_service.create_session(
-    app_name=APP_NAME,
-    user_id=USER_ID,
-    session_id=SESSION_ID
-))
+# # Use asyncio.run() to execute the async session creation**
+# session = asyncio.run(session_service.create_session(
+#     app_name=APP_NAME,
+#     user_id=USER_ID,
+#     session_id=SESSION_ID
+# ))
 
-print(session)
-runner = Runner(agent=root_agent, app_name=APP_NAME, session_service=session_service)
+# print(session)
+# runner = Runner(agent=root_agent, app_name=APP_NAME, session_service=session_service)
 
-def call_agent(query):
-    content = types.Content(role='user', parts=[types.Part(text=query)])
-    events = runner.run(user_id=USER_ID, session_id=SESSION_ID, new_message=content)
+# def call_agent(query):
+#     content = types.Content(role='user', parts=[types.Part(text=query)])
+#     events = runner.run(user_id=USER_ID, session_id=SESSION_ID, new_message=content)
     
-    for event in events:
-        print(f"Content: {event.content}")
-        if event.is_final_response():
-            final_response = event.content.parts[0].text
-            print("Agent Response: ", final_response)
+#     for event in events:
+#         print(f"Content: {event.content}")
+#         if event.is_final_response():
+#             final_response = event.content.parts[0].text
+#             print("Agent Response: ", final_response)
 
-call_agent("create a divorce document between sandeep and sathvik ")
+# call_agent("create a divorce document between sandeep and sathvik ")
