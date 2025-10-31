@@ -154,4 +154,6 @@ def call_agent(query):
             final_response = event.content.parts[0].text
             print("Agent Response: ", final_response)
 
-call_agent("create a divorce document between sandeep and sathvik ")
+    return final_response
+
+#call_agent("create a divorce document between sandeep and sathvik ")

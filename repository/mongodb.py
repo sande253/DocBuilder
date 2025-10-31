@@ -120,7 +120,7 @@ class MongoDBHandler:
 
         # Add position modifier only if user provides a specific index
         if position is not None:
-            update_query["$push"]["pages"]["$position"] = position
+            update_query["$push"]["pages"]["$position"] = position-1
 
         result = self.collection.update_one(
             {"session_id": session_id},
