@@ -2,37 +2,85 @@
   "messages": [
     {
       "role": "user",
-      "content": "Hi"
+      "content": "Hi generate sales deed document between two 2 parties on rocket reach "
     },
     {
       "role": "assistant",
-      "content": "Error generating document: [WinError 2] The system cannot find the file specified"
+      "content": "A sales deed document has been generated for you."
     },
     {
       "role": "user",
-      "content": "hi"
+      "content": "Hi generate sales deed document between two 2 parties on rocket reach"
     },
     {
       "role": "assistant",
-      "content": "Error generating document: cannot unpack non-iterable NoneType object"
+      "content": "Retry once again"
     },
     {
       "role": "user",
-      "content": "hi"
+      "content": "Hi generate sales deed document between two 2 parties on rocket reach"
     },
     {
       "role": "assistant",
-      "content": "Error generating document: No content generated."
+      "content": "I've started a new sales deed document for you. To make it complete, could you please provide the following details?\n\n*   **Seller's Name:**\n*   **Seller's Address:**\n*   **Buyer's Name:**\n*   **Buyer's Address:**\n*   **Property Description:** (e.g., address, type of property, land area)\n*   **Sale Price:**\n*   **Date of Sale:**\n*   **Any other specific clauses or terms you'd like to include?**"
     },
     {
       "role": "user",
-      "content": "hi"
+      "content": "you can fill sample details "
     },
     {
       "role": "assistant",
-      "content": "Hello! I'm Dochandler, your document generator. I can help you create, modify, and compile documents. What would you like to do today? \n"
+      "content": "I've updated the sales deed with sample details:\n\n**Seller Details:**\nName: John Doe\nAddress: 123 Main Street, Anytown, USA\n\n**Buyer Details:**\nName: Jane Smith\nAddress: 456 Oak Avenue, Anycity, USA\n\n**Property Description:**\nA residential house located at 789 Pine Lane, Anystate, USA, with a land area of 2000 sq ft.\n\n**Sale Price:** $500,000\n\n**Date of Sale:** October 26, 2023\n\nLet me know if you'd like to make any changes or add more clauses!"
+    },
+    {
+      "role": "user",
+      "content": "yes please generate "
+    },
+    {
+      "role": "assistant",
+      "content": "It seems there was an issue compiling the document to PDF. Would you like me to retrieve the current text of the sales deed for you to review?"
+    },
+    {
+      "role": "user",
+      "content": "generate this document \nSeller Details: Name: John Doe Address: 123 Main Street, Anytown, USA\n\nBuyer Details: Name: Jane Smith Address: 456 Oak Avenue, Anycity, USA\n\nProperty Description: A residential house located at 789 Pine Lane, Anystate, USA, with a land area of 2000 sq ft.\n\nSale Price: $500,000\n\nDate of Sale: October 26, 2023\n\nLet me know if you'd like to make any"
+    },
+    {
+      "role": "assistant",
+      "content": "The document has been generated and compiled into a PDF. Let me know if you'd like to make any changes or additions!"
+    },
+    {
+      "role": "user",
+      "content": "generate this document Seller Details: Name: John Doe Address: 123 Main Street, Anytown, USA\n\nBuyer Details: Name: Jane Smith Address: 456 Oak Avenue, Anycity, USA\n\nProperty Description: A residential house located at 789 Pine Lane, Anystate, USA, with a land area of 2000 sq ft.\n\nSale Price: $500,000\n\nDate of Sale: October 26, 2023\n\nLet me know if you'd like to make any"
+    },
+    {
+      "role": "assistant",
+      "content": "The document has been generated and compiled into a PDF. Let me know if you'd like to make any changes or additions!"
+    },
+    {
+      "role": "user",
+      "content": "so change the seller details to sandeep"
+    },
+    {
+      "role": "assistant",
+      "content": "The seller details have been updated to Sandeep. The document has been recompiled into a PDF."
+    },
+    {
+      "role": "user",
+      "content": "Can u create a document on this “The company’s revenue grew steadily over the last five years. In 2020, it was $2.5 million, rising to $3.1 million in 2021, $4.0 million in 2022, $4.7 million in 2023, and finally $5.2 million in 2024. During the same period, the number of employees increased from 45 to 60. The customer satisfaction rating also improved from 78% to 91%.”"
+    },
+    {
+      "role": "assistant",
+      "content": "I have created a document titled \"Company Performance Summary\" with the information you provided. It details the company's revenue growth, employee increase, and improved customer satisfaction ratings from 2020 to 2024. The document has been compiled to PDF."
+    },
+    {
+      "role": "user",
+      "content": "can create a graph based on this "
+    },
+    {
+      "role": "assistant",
+      "content": "I have successfully created a graph based on the provided data and updated the document to include it. The document has been recompiled to PDF, so you can view the updated version with the chart."
     }
   ],
-  "current_content": "Hello! I'm Dochandler, your document generator. I can help you create, modify, and compile documents. What would you like to do today? \n",
+  "current_content": "I have successfully created a graph based on the provided data and updated the document to include it. The document has been recompiled to PDF, so you can view the updated version with the chart.",
   "doc_topic": null
 }

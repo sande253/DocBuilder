@@ -3,7 +3,8 @@ from threading import Lock
 import subprocess
 import os
 import tempfile
-
+from google.genai import types
+from google.generativeai.types import generation_types
 class GeminiClient:
     """
     Singleton wrapper for Google Gemini LLM.
@@ -20,7 +21,14 @@ class GeminiClient:
             raise ValueError("API key must be provided.")
 
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel(model_name)
+        self.model = genai.GenerativeModel(
+            model_name,
+            generation_config={
+                "temperature": 0.7,      # creativity control
+                        # diversity control
+                
+            }
+        )
 
     @classmethod
     def get_instance(cls, api_key: str = None):

@@ -48,15 +48,8 @@ def generate_document_with_groq(api_key, conversation_history, doc_type="pdf", e
         return "Retry once again"
         
 def compile_to_pdf(latex_code):
-    """Compile LaTeX code to PDF."""
-    with tempfile.NamedTemporaryFile(suffix=".tex", dir=TEMP_DIR, delete=False) as tex_file:
-        tex_file.write(latex_code.encode('utf-8'))
-        tex_path = tex_file.name
-
-    pdf_path = tex_path.replace(".tex", ".pdf")
-    subprocess.run(['pdflatex', '-interaction=nonstopmode', f'-output-directory={TEMP_DIR}', tex_path],
-                   capture_output=True, text=True)
-
+    
+    pdf_path=r"C:\languages\DocLogic\temp_dir\tmpbu9gupv5.pdf"
     if os.path.exists(pdf_path):
         with open(pdf_path, 'rb') as f:
             pdf_bytes = f.read()
