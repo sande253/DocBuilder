@@ -41,7 +41,7 @@ def save_history():
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 # ============ Document Generation ============
-def generate_document_with_groq(api_key, conversation_history, doc_type="pdf", existing_content=None, topic="Agentic AI"):
+def generate_document_with_groq( conversation_history, doc_type="pdf", existing_content=None, topic="Agentic AI"):
     try : 
        return  call_agent(conversation_history)
     except Exception as e :
@@ -322,12 +322,7 @@ st.markdown('<div class="main-subtitle">Create and preview professional document
 with st.sidebar:
     st.markdown('<div class="section-header">Settings</div>', unsafe_allow_html=True)
     
-    with st.expander("API Configuration", expanded=True):
-        api_key = st.text_input("Groq API Key", type="password", placeholder="Enter your Groq API key", help="Required to generate documents.")
-        if api_key:
-            st.success("Connected to Groq API")
-        else:
-            st.warning("Please enter a valid Groq API key.")
+    
     
     with st.expander("Document Options"):
         doc_type = st.selectbox(
@@ -394,17 +389,14 @@ with col2:
             st.info("Enter a prompt below to generate and preview your document.")
 
 # Chat input at the bottom
-prompt = st.chat_input("e.g., 'Create a 15-page document about Agentic AI with images'")
+prompt = st.chat_input("e.g., 'Create a Document on Tesla shares and trends and represent on a graph'")
 
 # ============ Handle User Input ============
 if prompt:
-    if not api_key:
-        st.error("Please provide a valid Groq API key in the sidebar.")
-        st.stop()
-    
+   
     st.session_state.messages.append({"role": "user", "content": prompt})
     show_loading_screen()
-    with st.spinner("Processing..."):
+    with st.spinner("Thinking..."):
         temp_imgs = []
         try:
             # Detect topic from prompt
@@ -414,7 +406,7 @@ if prompt:
                 st.session_state.current_content = None  # Reset content for new topic
             
             content = generate_document_with_groq(
-                api_key, 
+                
                 prompt, 
                 st.session_state.doc_type, 
                 st.session_state.current_content, 

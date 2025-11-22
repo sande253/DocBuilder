@@ -24,7 +24,7 @@ class GeminiClient:
         self.model = genai.GenerativeModel(
             model_name,
             generation_config={
-                "temperature": 0.7,      # creativity control
+                "temperature": 0.0,      # creativity control
                         # diversity control
                 
             }

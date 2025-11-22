@@ -1,0 +1,14 @@
+pip install uv 
+python -m uv venv 
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.venv\Scripts\activate
+uv init
+"C:\Users\Sathvik Thatipally\AppData\Roaming\Python\Python313\Scripts\uv.exe"
+& "C:\Users\Sathvik Thatipally\AppData\Roaming\Python\Python313\Scripts\uv.exe" 
+uv pip freeze > requirements.txt
+
+npx @modelcontextprotocol/inspector python server.py       
+uv add C:\languages\Jira-adklib\adk_lib-1.0.0-py3-none-any.whl  
+
+docker build -t pkce-server .
+docker run -d -p 8000:8000 --name pkce-container pkce-server

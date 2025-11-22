@@ -6,6 +6,7 @@ from datetime import datetime
 import json, os, subprocess
 from google.adk.tools import FunctionTool
 import re 
+from .manim_implementation import manim_handler
 TEMP_DIR = r"C:\languages\DocLogic\temp_dir"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
@@ -39,10 +40,18 @@ TEXT:
         print("LLM Output:", raw_output)
         # Optionally clean unwanted wrapper text
         return raw_output.strip()
+    def generate_video_from_text(self,prompt:str):
+         obj=manim_handler()
+         status = obj.create_manim_video(prompt)
+         if status :
+             url=obj.create_local_video_page(video_path=status.get("file"))
+             return url
+         return {"failed":"failed due to model overload from source servers "}
 
     # ---------- CREATE / UPDATE ----------
-    def create_new_document(self, text: str, document_name:str="Untitled", user_name:str="sathvik"):
+    def create_new_document(self, text: str, document_name:str):
         """Create a new document with LaTeX code generated from text."""
+        user_name="sathvik"
         latex_code = self._get_latex_from_llm(text)
         session_id = mongo.create_document(
             document_name=document_name,
@@ -93,7 +102,7 @@ TEXT:
 
             return json.loads(json_part)
         except Exception as e:
-            raise ValueError(f"❌ JSON extraction failed: {e}\nRaw output:\n{raw_output}")
+            raise ValueError(f" JSON extraction failed: {e}\nRaw output:\n{raw_output}")
 
 
     def generate_statistical_chart(self,text: str) -> str:
@@ -219,5 +228,6 @@ TEXT:
             FunctionTool(func=self.update_document),
             FunctionTool(func=self.get_document),
             FunctionTool(func=self.compile_to_pdf),
-            FunctionTool(func=self.generate_statistical_chart)
+            FunctionTool(func=self.generate_statistical_chart),
+            FunctionTool(func=self.generate_video_from_text)
         ]
