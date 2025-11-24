@@ -10,7 +10,7 @@ from .manim_implementation import manim_handler
 TEMP_DIR = r"C:\languages\DocLogic\temp_dir"
 os.makedirs(TEMP_DIR, exist_ok=True)
 
-client = GeminiClient.get_instance("AIzaSyD_LZvBS3iqIYU-2a6ZgFrdn89uaQhG9FM")
+client = GeminiClient.get_instance("AIzaSyD53G1Bwg1V39PyNBYQvKn7Gq89fXUBprw")
 mongo = MongoDBHandler(db_name="wt", collection_name="latex")
 # Directory to save charts
 CHART_DIR = r"C:\languages\DocLogic\charts"

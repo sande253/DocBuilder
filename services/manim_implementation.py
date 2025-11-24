@@ -4,17 +4,19 @@ import os
 import json 
 from .llm import GeminiClient
 import re 
-client = GeminiClient.get_instance("AIzaSyD_LZvBS3iqIYU-2a6ZgFrdn89uaQhG9FM")
+
+client = GeminiClient.get_instance("AIzaSyD53G1Bwg1V39PyNBYQvKn7Gq89fXUBprw")
 # ---------------------------
 # Fake LLM (fixed response)
 # ---------------------------
 class manim_handler:
     def extract_valid_json(self,raw_output: str):
-        
         """
-        Cleans and extracts JSON safely from LLM output.
+        Safely extract JSON from LLM output, even if code contains newlines or quotes.
+        Returns a dictionary.
         """
         try:
+            # Step 1: Find the first and last curly braces
             start = raw_output.find('{')
             end = raw_output.rfind('}') + 1
             if start == -1 or end == -1:
@@ -22,10 +24,18 @@ class manim_handler:
 
             json_part = raw_output[start:end]
 
-            # Fix common issues
-            json_part = json_part.replace("“", '"').replace("”", '"').replace("’", "'")
-            json_part = re.sub(r',\s*([\]}])', r'\1', json_part)
+            # Step 2: Escape control characters inside string values
+            # Replace raw newlines and carriage returns inside quotes with \n
+            def escape_control_chars(match):
+                inner = match.group(1)
+                inner = inner.replace('\n', '\\n').replace('\r', '')
+                inner = inner.replace('"', '\\"')
+                return f'"{inner}"'
 
+            # Regex finds all string values in JSON (naive but works for single-level JSON)
+            json_part = re.sub(r'"(.*?)"', escape_control_chars, json_part, flags=re.DOTALL)
+
+            # Step 3: Load as JSON
             return json.loads(json_part)
         except Exception as e:
             raise ValueError(f"❌ JSON extraction failed: {e}\nRaw output:\n{raw_output}")
@@ -33,8 +43,9 @@ class manim_handler:
     def llm_generate_manim_code(self,prompt: str) -> str:
         
         PROMPT =r"""You are an expert in Python and Manim (Community v0.19+). Write a complete Python script for a Manim Scene that animates [describe algorithm or visualization, e.g., Bubble Sort on array [4,2,7,1,3]].
-
+always use the module import manim
 Requirements:
+-Do not compicate the syntax to an extent where it has high posibility of failing but try 
 --Every visual element that needs text (array values, nodes, labels) must be a single VGroup containing the shape (Rectangle, Circle, etc.) and a centered Text element.
 -Do not use raw coordinates. Use VGroup.arrange(direction=RIGHT/UP, buff=0.4) or relative positioning for consistent spacing.
 -Animate movements or swaps for the entire VGroup, never individual sub-elements.
@@ -49,7 +60,11 @@ Requirements:
 {
 "code": "<full Python code here>"
 }
-
+Output requirements 
+1. All newlines, tabs, and quotes inside the code must be properly escaped.
+2. Use double quotes for JSON keys and string values.
+3. Do not include markdown, backticks, or any explanation.
+4. Ensure the output is always a single JSON object.
 Instruction: Generate the Manim code in the JSON format above only, do not include any explanations, text, or extra formatting outside the JSON.
          """+f"\nContext on what to genenrate:{prompt} "
         raw_output = client.get_response(PROMPT)
@@ -92,7 +107,7 @@ Instruction: Generate the Manim code in the JSON format above only, do not inclu
         except subprocess.CalledProcessError as e:
             print("[ERROR] Manim failed:")
             print(e)
-            return None
+            return {"error":e}
 
         scene_name = self.extract_scene_name(code)
 
@@ -110,7 +125,16 @@ Instruction: Generate the Manim code in the JSON format above only, do not inclu
         # else:
         #     print("[ERROR] Video not found at:", output_path)
         #     return None
-        output_path = rf"C:\languages\DocLogic\media\videos\{scene_id}\480p15\{scene_name}.mp4"
+        import os
+
+        directory = f"C:/languages/DocLogic/media/videos/{scene_id}/480p15"
+
+        # List all .mp4 files
+        mp4_files = [f for f in os.listdir(directory) if f.lower().endswith(".mp4")]
+
+        scene_name=mp4_files[0]
+
+        output_path = rf"C:\languages\DocLogic\media\videos\{scene_id}\480p15\{scene_name}"
 
         if os.path.exists(output_path):
             return output_path
@@ -234,21 +258,22 @@ Instruction: Generate the Manim code in the JSON format above only, do not inclu
         for i in range (0,5):
             try : 
              rendered_file = self.run_manim(code)
-             break 
+              
             except Exception as e : 
                 print("Retrying to generate "+(i+1))
                 error = e 
-            if rendered_file:
+            if not isinstance(rendered_file, dict) :
                 print("\n[SUCCESS] Video generated at:")
                 print(rendered_file)
                 return {"file":rendered_file}
             else:
                 print("\n[FAILED-loop] Something went wrong generating the video.")
                     
-                prompt =f"Please fix this code error:{e} \n code :{code}"
+                prompt =f"Please fix this code make sure you use right imports , variable declaration , right syntax if it is confusing make simple version of this \n code :{code}"
+                print(prompt)
                 code=self.llm_generate_manim_code(prompt=prompt)
 
-        if rendered_file:
+        if not isinstance(rendered_file, dict) :
                 print("\n[SUCCESS] Video generated at:")
                 print(rendered_file)
                 return {"file":rendered_file}
@@ -259,4 +284,6 @@ Instruction: Generate the Manim code in the JSON format above only, do not inclu
 
 
 
+# obj=manim_handler()
+# status = obj.create_manim_video("explaining how chromosomes work")
 
